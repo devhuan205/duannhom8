@@ -176,20 +176,20 @@ public class NhanVienFragment extends Fragment {
         dialog.show();
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-//        if(requestCode == REQUEST_CODE_FOLDER && resultCode == RESULT_OK && data != null){
-//            Uri uri = data.getData();
-//            try {
-//                InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
-//                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                img_avata.setImageBitmap (bitmap);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        if(requestCode == REQUEST_CODE_FOLDER && resultCode == RESULT_OK && data != null){
+            Uri uri = data.getData();
+            try {
+                InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                img_avata.setImageBitmap (bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     public void xoa(final String Id){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
