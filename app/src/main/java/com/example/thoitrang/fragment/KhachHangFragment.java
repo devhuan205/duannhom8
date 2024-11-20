@@ -58,7 +58,7 @@ KhachHang item;
                 if (edt_search.getText().length() == 0){
                     Toast.makeText(getContext(), "Vui lòng nhập thông tin trước khi Search", Toast.LENGTH_SHORT).show();
                 }
-//                capNhatTen_khachHang();
+                capNhatTen_khachHang();
             }
         });
 //chapppp
