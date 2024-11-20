@@ -61,7 +61,7 @@ KhachHang item;
                 capNhatTen_khachHang();
             }
         });
-
+//chapppp
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +165,7 @@ KhachHang item;
         adapter = new KhachHangAdapter(getActivity(), this,list);
         lv.setAdapter(adapter);
         return;
+
     }
 
     void capNhatTen_khachHang(){
