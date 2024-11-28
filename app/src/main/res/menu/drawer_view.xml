@@ -27,7 +27,7 @@
             <item
                 android:id="@+id/nav_sub_Top"
                 android:icon="@drawable/icon_top"
-                android:title="5 Sản phẩm Mua Nhiều Nhất"/>
+                android:title="TOP SẢN PHẨM BÁN CHẠY NHẤT"/>
 
             <item
                 android:id="@+id/nav_sub_DoanhThu"

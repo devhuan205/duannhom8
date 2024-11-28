@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.thoitrang.R;
 import com.example.thoitrang.adapter.GiaySpinnerAdapter;
-import com.example.thoitrang.adapter.HoaDonAdapter;
+import com.example.thoitrang.adapter.ExHoaDonAdapter;
 import com.example.thoitrang.adapter.KhachHangSpinnerAdapter;
 import com.example.thoitrang.adapter.NhanVienSpinnerAdapter;
 import com.example.thoitrang.dao.GiayDAO;
@@ -30,9 +32,10 @@ import com.example.thoitrang.dao.HoaDonDAO;
 import com.example.thoitrang.dao.KhachHangDAO;
 import com.example.thoitrang.dao.NhanVienDAO;
 import com.example.thoitrang.model.Giay;
-import com.example.thoitrang.model.HoaDon;
+import com.example.thoitrang.model.ExHoaDon;
 import com.example.thoitrang.model.KhachHang;
 import com.example.thoitrang.model.NhanVien;
+import com.example.thoitrang.viewmodel.HoaDonViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -41,10 +44,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class HoaDonFragment extends Fragment {
-    int mYear,mMonth,mDay;
+public class HoaDonContainerFragment extends Fragment {
+    int mYear, mMonth, mDay;
     ListView lv;
-    ArrayList<HoaDon> list;
+    ArrayList<ExHoaDon> list;
     FloatingActionButton fab;
     Dialog dialog;
     EditText edMaHD, edNgayMua, edGiaMua;
@@ -54,9 +57,9 @@ public class HoaDonFragment extends Fragment {
     Button btnSave, btnCancel;
 
     static HoaDonDAO dao;
-    HoaDonAdapter adapter;
+    ExHoaDonAdapter adapter;
 
-    HoaDon item;
+    ExHoaDon item;
 
 
     KhachHangSpinnerAdapter khachHangSpinnerAdapter;
@@ -77,30 +80,43 @@ public class HoaDonFragment extends Fragment {
     int positionKH, positionGiay, positionNV;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+    HoaDonViewModel hoaDonViewModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_hoa_don, container, false);
+        hoaDonViewModel = new ViewModelProvider(requireActivity()).get(HoaDonViewModel.class);
+        View v = inflater.inflate(R.layout.fragment_hoa_don, container, false);
         lv = v.findViewById(R.id.lvHoaDon);
         fab = v.findViewById(R.id.fab_HD);
         dao = new HoaDonDAO(getActivity());
         capNhatLv();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog(getActivity(),0);
-            }
+        fab.setOnClickListener(v1 -> {
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            TaoHoaDonFragment fragment = new TaoHoaDonFragment();
+
+            transaction.replace(R.id.hoa_don_fragment, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            fab.setVisibility(View.GONE);
         });
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                item = list.get(position);
-                openDialog(getActivity(),1);
-                return false;
-            }
+        lv.setOnItemLongClickListener((parent, view, position, id) -> {
+            item = list.get(position);
+            openDialog(getActivity(), 1);
+            return false;
         });
+        observeData();
         return v;
     }
-    protected void openDialog(final Context context, final int type){
+
+    private void observeData() {
+        hoaDonViewModel.setDao(new HoaDonDAO(requireActivity()), new GiayDAO(requireActivity()));
+        hoaDonViewModel.observeHoaDonChanged().observe(getViewLifecycleOwner(), integer -> {
+            capNhatLv();
+        });
+    }
+
+
+    protected void openDialog(final Context context, final int type) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.hodon_dialog);
         edMaHD = dialog.findViewById(R.id.edMaHD);
@@ -212,13 +228,13 @@ public class HoaDonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                item = new HoaDon();
+                item = new ExHoaDon();
                 item.maGiay=maGiay;
                 item.maKH=maKhachHang;
                 item.maNV=maNV;
 //                item.setMaGiay(maGiay);
 //                item.setMaKH(maKhachHang);
-//                item.setMaNV(maNV);
+//                item.setMaNV(maNV);//
                 item.ngay = edNgayMua.getText().toString();
                 item.giaHD = tienMua;
                 if(chkTrangThai.isChecked()){
@@ -273,8 +289,8 @@ public class HoaDonFragment extends Fragment {
         builder.show();
     }
     void capNhatLv(){
-        list = (ArrayList<HoaDon>) dao.getAll();
-        adapter = new HoaDonAdapter(getActivity(),this,list);
+        list = (ArrayList<ExHoaDon>) dao.getAll();
+        adapter = new ExHoaDonAdapter(getActivity(),this,list);
         lv.setAdapter(adapter);
         return;
     }
