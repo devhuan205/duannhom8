@@ -4,7 +4,10 @@ plugins {
 
 android {
     compileSdkVersion 35
+<<<<<<< HEAD
     buildToolsVersion "30.0.3"
+=======
+>>>>>>> e2a60f3002a16255a8a29c0cdf4fcaf583b120ec
 
     defaultConfig {
         applicationId "com.example.thoitrang"
