@@ -17,14 +17,15 @@ import com.example.thoitrang.model.Top;
 
 import java.util.ArrayList;
 
-public class TopAdapter extends ArrayAdapter<Top> {
+@Deprecated(since = "This class is deprecated")
+public class ExTopAdapter extends ArrayAdapter<Top> {
     private Context context;
     TopFragment fragment;
     private ArrayList<Top> lists;
     TextView tvTenGiay, tvSL;
 
-    public TopAdapter(@NonNull Context context, TopFragment fragment, ArrayList<Top> lists) {
-        super(context, 0,lists);
+    public ExTopAdapter(@NonNull Context context, TopFragment fragment, ArrayList<Top> lists) {
+        super(context, 0, lists);
         this.context = context;
         this.lists = lists;
         this.fragment = fragment;
@@ -34,17 +35,17 @@ public class TopAdapter extends ArrayAdapter<Top> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View v = convertView;
-        if(v == null){
+        if (v == null) {
             LayoutInflater inflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.top_item,null);
+            v = inflater.inflate(R.layout.top_item, null);
         }
         final Top item = lists.get(position);
-        if(item != null){
+        if (item != null) {
             tvTenGiay = v.findViewById(R.id.tvTenGiayT);
-            tvTenGiay.setText("Tên: "+item.tenGiay);
+            tvTenGiay.setText("Tên: " + item.tenGiay);
             tvSL = v.findViewById(R.id.tvsoLuong);
-            tvSL.setText("Số Lượng: "+item.slTOP);
+            tvSL.setText("Số Lượng: " + item.slTOP);
             tvTenGiay.setTextColor(Color.BLUE);
             tvSL.setTextColor(Color.BLUE);
         }

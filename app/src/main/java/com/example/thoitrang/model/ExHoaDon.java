@@ -1,6 +1,7 @@
 package com.example.thoitrang.model;
 
-public class HoaDon {
+@Deprecated(since = "This class is deprecated")
+public class ExHoaDon {
     public int maHD;
     public int maNV;
     public int maKH;
@@ -9,10 +10,10 @@ public class HoaDon {
     public String giaHD;
     public int trangThai;
 
-    public HoaDon() {
+    public ExHoaDon() {
     }
 
-    public HoaDon(int maHD, int maNV, int maKH, int maGiay, String ngay, String giaHD, int trangThai) {
+    public ExHoaDon(int maHD, int maNV, int maKH, int maGiay, String ngay, String giaHD, int trangThai) {
         this.maHD = maHD;
         this.maNV = maNV;
         this.maKH = maKH;
